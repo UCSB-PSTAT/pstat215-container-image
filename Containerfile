@@ -6,5 +6,7 @@ USER root
 
 RUN R -e "install.packages(c('tidyverse', 'tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
+ENV TZ PST
+
 USER $NB_USER
 
