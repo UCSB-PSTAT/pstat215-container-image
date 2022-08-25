@@ -8,7 +8,7 @@ RUN apt-get update ; \
     apt-get install -y texlive-full ; \ 
     apt-get clean
 
-RUN R -e "install.packages(c('tidyverse', 'tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'plot-penguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
+RUN R -e "install.packages(c('tidyverse', 'tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
 USER $NB_USER
 
