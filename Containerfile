@@ -4,13 +4,13 @@ LABEL maintainer="LSIT Systems <lsitops@ucsb.edu>"
 
 USER root
 
-RUN apt-get update ; \
-    apt-get install -y texlive-full python-dev libbz2-dev libxt-dev nano; \ 
+RUN apt-get update && \
+    apt-get install -y texlive-full lmodern python3-dev libbz2-dev libxt-dev nano && \
     apt-get clean
 
 RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
-RUN R -e "install.packages('cmdstanr', repos = 'https://mc-stan.org/r-packages/')"
+RUN R -e "install.packages(c('cmdstanr', 'StanHeaders'), repos = 'https://mc-stan.org/r-packages/', Ncpus = parallel::detectCores())"
 
 ENV TZ PST
 
