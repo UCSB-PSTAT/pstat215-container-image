@@ -12,6 +12,8 @@ RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo
 
 RUN R -e "install.packages(c('cmdstanr', 'StanHeaders'), repos = 'https://mc-stan.org/r-packages/', Ncpus = parallel::detectCores())"
 
+RUN R -e "library(cmdstanr); install_cmdstan(cores = parallel::detectCores())"
+
 ENV TZ PST
 
 USER $NB_USER
