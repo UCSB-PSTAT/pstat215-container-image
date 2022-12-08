@@ -16,6 +16,8 @@ RUN R -e "install.packages(c('cmdstanr', 'StanHeaders'), repos = 'https://mc-sta
 
 ENV TZ PST
 
+ENV CMDSTAN /opt/conda/bin/cmdstan
+
 USER $NB_USER
 
 CMD echo "CMDSTAN=/opt/conda/bin/cmdstan\nCMDSTANR_NO_VER_CHECK=TRUE" > ~/.Renviron && "start-notebook.sh"
