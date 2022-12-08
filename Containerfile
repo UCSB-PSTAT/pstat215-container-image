@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get clean
 
 RUN mamba install -y -c conda-forge cmdstan && \
-    chown -Rf jovan /opt/conda/bin/cmdstan
+    chown -Rf jovyan /opt/conda/bin/cmdstan
 
 RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
