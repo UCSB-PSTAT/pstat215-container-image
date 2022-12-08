@@ -8,7 +8,8 @@ RUN apt-get update && \
     apt-get install -y texlive-full lmodern python3-dev libbz2-dev libxt-dev nano && \
     apt-get clean
 
-RUN mamba install -y -c conda-forge cmdstan
+RUN mamba install -y -c conda-forge cmdstan && \
+    chown -Rf jovan /opt/conda/bin/cmdstan
 
 RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
