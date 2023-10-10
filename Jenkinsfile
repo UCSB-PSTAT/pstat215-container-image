@@ -21,7 +21,12 @@ pipeline {
                         }
                         echo "NODE_NAME = ${env.NODE_NAME}"
                         sh 'podman build -t localhost/$IMAGE_NAME --pull --force-rm --no-cache .'
-                     }
+                    }
+                    post {
+                        unsuccessful {
+                            sh 'podman rmi -i localhost/$IMAGE_NAME || true'
+                        }
+                    }
                 }
                 stage('Test') {
                     steps {
@@ -36,7 +41,12 @@ pipeline {
                         sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                     }
                     post {
-                        always { sh 'podman rm -ifv $IMAGE_NAME' }
+                        always {
+                            sh 'podman rm -ifv $IMAGE_NAME'
+                        }
+                        unsuccessful {
+                            sh 'podman rmi -i localhost/$IMAGE_NAME || true'
+                        }
                     }
                 }
                 stage('Deploy') {
@@ -48,12 +58,16 @@ pipeline {
                         sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://docker.io/ucsb/$IMAGE_NAME:latest --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
                         sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://docker.io/ucsb/$IMAGE_NAME:v$(date "+%Y%m%d") --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
                     }
+                    post {
+                        always {
+                            sh 'podman rmi -i localhost/$IMAGE_NAME || true'
+                        }
+                    }
                 }                
             }
         }
     }
     post {
-        always { sh 'podman rmi -i localhost/$IMAGE_NAME || true' }
         success {
             slackSend(channel: '#infrastructure-build', username: 'jenkins', color: 'good', message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} just finished successfull! (<${env.BUILD_URL}|Details>)")
         }
