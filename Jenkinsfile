@@ -36,9 +36,7 @@ pipeline {
                         sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                     }
                     post {
-                        always {
-                            sh 'podman rmi -i localhost/$IMAGE_NAME || true'
-                        }
+                        always { sh 'podman rm -ifv $IMAGE_NAME' }
                     }
                 }
                 stage('Deploy') {
@@ -55,6 +53,7 @@ pipeline {
         }
     }
     post {
+        always { sh 'podman rmi -i localhost/$IMAGE_NAME || true' }
         success {
             slackSend(channel: '#infrastructure-build', username: 'jenkins', color: 'good', message: "Build ${env.JOB_NAME} ${env.BUILD_NUMBER} just finished successfull! (<${env.BUILD_URL}|Details>)")
         }
