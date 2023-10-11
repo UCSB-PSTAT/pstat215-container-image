@@ -13,7 +13,7 @@ RUN mamba install -y -c conda-forge cmdstan && \
 
 RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 
-RUN R -e "install.packages(c('cmdstanr', 'StanHeaders'), repos = 'https://mc-stan.org/r-packages/', Ncpus = parallel::detectCores())"
+RUN R -e "remove.packages(c("StanHeaders", "rstan")); install.packages("StanHeaders", repos = c("https://mc-stan.org/r-packages/", getOption("repos"), Ncpus = parallel::detectCores())); install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", Ncpus = parallel::detectCores(), getOption("repos")))"
 
 ENV TZ PST
 
