@@ -15,7 +15,7 @@ RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo
 
 RUN R -e "install.packages(c('cmdstanr', 'rstan', 'StanHeaders'), repos = 'https://mc-stan.org/r-packages/', Ncpus = parallel::detectCores())"
 
-RUN R -e "install.packages('INLA',repos=c(getOption('repos'),INLA='https://inla.r-inla-download.org/R/stable'), dep=TRUE)"
+RUN R -e "install.packages('INLA',repos = 'https://inla.r-inla-download.org/R/stable', Ncpus = parallel::detectCores())"
 
 ENV TZ PST
 
