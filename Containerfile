@@ -5,10 +5,10 @@ LABEL maintainer="LSIT Systems <lsitops@ucsb.edu>"
 USER root
 
 RUN apt-get update && \
-    apt-get install -y texlive-full lmodern python3-dev libbz2-dev libxt-dev nano && \
+    apt-get install -y texlive-full lmodern python3-dev libbz2-dev libxt-dev nano libgdal-dev locate && \
     apt-get clean
 
-RUN mamba install -y -c conda-forge cmdstan && \
+RUN mamba install -y -c conda-forge cmdstan udunits2 gdal r-sf r-terra r-inlabru && \
     chown -Rf jovyan /opt/conda/bin/cmdstan
 
 RUN R -e "install.packages(c('tidyverse','tidybayes', 'rstan', 'shinystan', 'loo', 'coda', 'fmesher', 'HDInterval', 'testthat', 'MASS', 'palmerpenguins', 'packrat', 'rsconnect'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
