@@ -36,7 +36,7 @@ pipeline {
                         container('podman') {
                             sh 'podman run -it --rm localhost/$IMAGE_NAME which rstudio'
                             sh 'podman run -it --rm localhost/$IMAGE_NAME find /usr/share -type f -name lmodern.sty'
-                            sh 'podman run -it --rm localhost/$IMAGE_NAME R -q -e "getRversion() >= \\"4.1.3\\"" | tee /dev/stderr | grep -q "TRUE"'
+                            sh 'podman run -it --rm localhost/$IMAGE_NAME R -q -e "getRversion() >= \\"4.5.2\\"" | tee /dev/stderr | grep -q "TRUE"'
                             sh 'podman run -it --rm localhost/$IMAGE_NAME R -e "library(\"INLA\");library(\"fmesher\");library(\"tidyverse\");library(\"tidybayes\");library(\"rstan\");library(\"shinystan\");library(\"loo\");library(\"coda\");library(\"HDInterval\");library(\"testthat\");library(\"MASS\");library(\"palmerpenguins\");library(\"packrat\");library(\"cmdstanr\");library(\"rsconnect\");library(\"StanHeaders\");cmdstan_version()"'
                             sh 'podman run -it --rm -v${PWD}/test.stan:/tmp/test.stan:z localhost/$IMAGE_NAME R -e "library(\"rstan\");library(\"tidyverse\");library(\"tidybayes\");sm <- stan_model(\\"/tmp/test.stan\\"); res <- sampling(sm, data=list(N=100, y=rnorm(100)))"'
                             sh 'podman run -d --name=$IMAGE_NAME --rm -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
